@@ -1,10 +1,13 @@
 from databases.rds import Rds
 from utils import logger
+from utils.sns import Sns
 
 
 def process():
     logger.info('Initializing process!')
     alarm_1()
+    alarm_2()
+    alarm_3()
 
 
 def alarm_1():
@@ -21,9 +24,10 @@ def alarm_1():
 
     result = Rds.instance.execute(query=query)
     Rds.instance.commit()
-    Rds.instance.close()
+
     if result:
-        return
+        sns = Sns().sns_client_connection()
+        sns.publish(PhoneNumber='+5521900000000', Message='Error Alarm 1')
 
 
 def alarm_2():
@@ -39,9 +43,10 @@ def alarm_2():
 
     result = Rds.instance.execute(query=query)
     Rds.instance.commit()
-    Rds.instance.close()
+
     if result:
-        return
+        sns = Sns().sns_client_connection()
+        sns.publish(PhoneNumber='+5521900000000', Message='Error Alarm 2')
 
 
 def alarm_3():
@@ -58,5 +63,7 @@ def alarm_3():
     result = Rds.instance.execute(query=query)
     Rds.instance.commit()
     Rds.instance.close()
+
     if result:
-        return
+        sns = Sns().sns_client_connection()
+        sns.publish(PhoneNumber='+5521900000000', Message='Error Alarm 3')
